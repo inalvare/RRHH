@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,7 +56,7 @@ public class EmpleadoController {
 		
 	}
 	
-	@PostMapping("/empleados/nueva")
+	@PostMapping("/empleado/nuevo")
 	public ResponseEntity<?> saveEmpleado(@RequestBody Empleado empleado) {
 		 Empleado empleadoNueva= null;
 		 Map<String, Object> response = new HashMap<>();
@@ -77,7 +78,7 @@ public class EmpleadoController {
 		 
 	}
 	
-	@PutMapping("/empleados/{id}")
+	@PutMapping("/empleado/{id}")
 	public ResponseEntity<?> updateEmpleado(@RequestBody Empleado empleado, @PathVariable Long id) {
 		Empleado empleadoActual = servicio.findById(id);
 		
@@ -89,7 +90,7 @@ public class EmpleadoController {
 		}
 		
 		try {
-			empleadoActual.setDNI(empleado.getDNI());
+			empleadoActual.setDni(empleado.getDni());
 			empleadoActual.setNombre(empleado.getNombre());
 			empleadoActual.setSalario(empleado.getSalario());
 			empleadoActual.setTelefono(empleado.getTelefono());
@@ -109,5 +110,26 @@ public class EmpleadoController {
 		 response.put("empleado", empleadoActual);
 		 
 		 return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
+	}
+	
+	@DeleteMapping("/empleadodelete/{id}")
+	public ResponseEntity<?> deleteEmpleado(@PathVariable Long id) {
+		Empleado empleadoActual= servicio.findById(id);
+		
+		Map<String, Object> response=new HashMap<>();
+		
+		try {
+			
+			empleadoActual=servicio.delete(id);
+			
+		} catch(DataAccessException e) {
+			response.put("mensaje", "Error al eliminar el empleado");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje","El empleado se ha eliminado con exito");
+		response.put("empleado",empleadoActual);
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 	}
 }

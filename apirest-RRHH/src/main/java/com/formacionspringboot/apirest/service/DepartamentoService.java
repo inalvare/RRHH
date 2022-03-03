@@ -12,5 +12,5 @@ public interface DepartamentoService {
 	
 	public Departamento save(Departamento departamento);
 	
-	public void delete(Long id);
+	public Departamento delete(Long id);
 }

@@ -11,5 +11,5 @@ public interface EmpleadoService {
 	
 	public Empleado save(Empleado empleado);
 	
-	public void delete(Long id);
+	public Empleado delete(Long id);
 }

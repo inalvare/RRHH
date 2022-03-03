@@ -33,9 +33,9 @@ public class EmpleadoServiceImpl implements EmpleadoService{
 	}
 
 	@Override
-	public void delete(Long id) {
-
+	public Empleado delete(Long id) {
 		AccesoDb.deleteById(id);
+		return null;
 		
 	}
 }

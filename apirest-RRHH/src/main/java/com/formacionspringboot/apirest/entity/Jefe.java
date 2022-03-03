@@ -18,28 +18,39 @@ public class Jefe {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long DNI;
+	private Long id;
+	
+	@Column(name="dni", nullable = false, length=50, unique = true)
+	private String dni;
 	
 	@Column(name="nombre", nullable = false, length=50)
 	private String nombre;
 	
 	@Column(name="salario", nullable = false, length=50)
-	private String salario;
+	private Double salario;
 	
 	@Column(name="telefono", nullable = false, length=50)
-	private String telefono;
+	private int telefono;
 	
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="cod_dep")
 	@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 	private Departamento departamento;
 
-	public Long getDNI() {
-		return DNI;
+	public String getDni() {
+		return dni;
 	}
 
-	public void setDNI(Long dNI) {
-		DNI = dNI;
+	public void setDni(String dni) {
+		this.dni = dni;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getNombre() {
@@ -50,19 +61,19 @@ public class Jefe {
 		this.nombre = nombre;
 	}
 
-	public String getSalario() {
+	public Double getSalario() {
 		return salario;
 	}
 
-	public void setSalario(String salario) {
+	public void setSalario(Double salario) {
 		this.salario = salario;
 	}
 
-	public String getTelefono() {
+	public int getTelefono() {
 		return telefono;
 	}
 
-	public void setTelefono(String telefono) {
+	public void setTelefono(int telefono) {
 		this.telefono = telefono;
 	}
 

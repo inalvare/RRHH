@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.formacionspringboot.apirest.entity.Departamento;
 import com.formacionspringboot.apirest.entity.Departamento;
 import com.formacionspringboot.apirest.service.DepartamentoService;
 
@@ -55,7 +57,7 @@ public class DepartamentoController {
 		
 	}
 	
-	@PostMapping("/departamentos/nueva")
+	@PostMapping("/departamento/nuevo")
 	public ResponseEntity<?> saveDepartamento(@RequestBody Departamento departamento) {
 		 Departamento departamentoNueva= null;
 		 Map<String, Object> response = new HashMap<>();
@@ -77,7 +79,7 @@ public class DepartamentoController {
 		 
 	}
 	
-	@PutMapping("/departamentos/{id}")
+	@PutMapping("/departamento/{id}")
 	public ResponseEntity<?> updateDepartamento(@RequestBody Departamento departamento, @PathVariable Long id) {
 		Departamento departamentoActual = servicio.findById(id);
 		
@@ -89,7 +91,6 @@ public class DepartamentoController {
 		}
 		
 		try {
-			departamentoActual.setId(departamento.getId());
 			departamentoActual.setNombre(departamento.getNombre());
 			departamentoActual.setUbicacion(departamento.getUbicacion());
 			
@@ -107,5 +108,29 @@ public class DepartamentoController {
 		 response.put("departamento", departamentoActual);
 		 
 		 return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
+	}
+	
+	@DeleteMapping("/departamentodelete/{id}")
+	public ResponseEntity<?> deleteDepartamento(@PathVariable Long id) {
+		
+		Map<String, Object> response=new HashMap<>();
+		
+		Departamento departamentoActual= servicio.findById(id);
+		
+		response.put("departamento",departamentoActual);
+		
+		try {
+			
+			departamentoActual=servicio.delete(id);
+			
+		} catch(DataAccessException e) {
+			response.put("mensaje", "Error al eliminar el departamento");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			
+			return  new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje","El departamento se ha eliminado con exito");
+		response.put("jefe",departamentoActual);
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 	}
 }

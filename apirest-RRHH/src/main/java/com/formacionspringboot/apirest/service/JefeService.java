@@ -11,5 +11,5 @@ public interface JefeService {
 	
 	public Jefe save(Jefe jefe);
 	
-	public void delete(Long id);
+	public Jefe delete(Long id);
 }

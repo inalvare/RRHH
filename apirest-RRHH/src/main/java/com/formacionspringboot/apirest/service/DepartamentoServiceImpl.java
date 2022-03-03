@@ -33,9 +33,9 @@ public class DepartamentoServiceImpl implements DepartamentoService{
 	}
 
 	@Override
-	public void delete(Long id) {
-
+	public Departamento delete(Long id) {
 		AccesoDb.deleteById(id);
+		return null;
 		
 	}
 }

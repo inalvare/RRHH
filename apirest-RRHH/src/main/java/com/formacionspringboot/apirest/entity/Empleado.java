@@ -1,5 +1,7 @@
 package com.formacionspringboot.apirest.entity;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -18,28 +21,39 @@ public class Empleado {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long DNI;
+	private Long id;
+	
+	@Column(name="dni", nullable = false, length=50, unique = true)
+	private String dni;
 	
 	@Column(name="nombre", nullable = false, length=50)
 	private String nombre;
 	
 	@Column(name="salario", nullable = false, length=50)
-	private String salario;
+	private Double salario;
 	
 	@Column(name="telefono", nullable = false, length=50)
-	private String telefono;
+	private int telefono;
 	
-	@OneToMany(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="codDep")
 	@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 	private Departamento departamento;
 
-	public Long getDNI() {
-		return DNI;
+	public Long getId() {
+		return id;
 	}
 
-	public void setDNI(Long dNI) {
-		DNI = dNI;
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getDni() {
+		return dni;
+	}
+
+	public void setDni(String dni) {
+		this.dni = dni;
 	}
 
 	public String getNombre() {
@@ -50,19 +64,23 @@ public class Empleado {
 		this.nombre = nombre;
 	}
 
-	public String getSalario() {
+	public Double getSalario() {
 		return salario;
 	}
 
-	public void setSalario(String salario) {
+	public void setSalario(Double salario) {
 		this.salario = salario;
 	}
 
-	public String getTelefono() {
+	public void setDepartamento(Departamento departamento) {
+		this.departamento = departamento;
+	}
+
+	public int getTelefono() {
 		return telefono;
 	}
 
-	public void setTelefono(String telefono) {
+	public void setTelefono(int telefono) {
 		this.telefono = telefono;
 	}
 
@@ -70,9 +88,4 @@ public class Empleado {
 		return departamento;
 	}
 
-	public void setDepartamento(Departamento cliente) {
-		this.departamento = cliente;
-	}
-	
-	
 }

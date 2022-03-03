@@ -33,9 +33,9 @@ public class JefeServiceImpl implements JefeService{
 	}
 
 	@Override
-	public void delete(Long id) {
-
+	public Jefe delete(Long id) {
 		AccesoDb.deleteById(id);
+		return null;
 		
 	}
 }
